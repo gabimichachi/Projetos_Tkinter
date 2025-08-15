@@ -1,0 +1,26 @@
+# Arquivos de bytecode
+*.pyc
+__pycache__/
+
+# Arquivos de configuração local
+.env
+.python-version
+
+# Diretório de ambiente virtual
+venv/
+.venv/
+
+# Arquivos de build
+dist/
+build/
+
+# Arquivos de IDE
+.idea/
+.vscode/
+
+
+
+
+
+
+

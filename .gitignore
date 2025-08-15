@@ -1,21 +1,41 @@
-# Arquivos de bytecode
-*.pyc
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
 
-# Arquivos de configuração local
-.env
-.python-version
+# C extensions
+*.so
 
-# Diretório de ambiente virtual
-venv/
-.venv/
-
-# Arquivos de build
+# Distribution / packaging
 dist/
 build/
+*.egg-info/
+*.egg
 
-# Arquivos de IDE
+# Virtual environments
+venv/
+env/
+ENV/
+.env/
+.venv/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE and editor specific
 .idea/
+*.swp
+*~
 .vscode/
 
 

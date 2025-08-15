@@ -10,3 +10,8 @@ rotulo.pack()
 
 #loop para manter a janela aberta
 janela.mainloop()
+
+#mudando a cor de fundo da janela
+janela.config(bg="lightblue")
+
+

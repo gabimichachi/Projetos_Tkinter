@@ -37,15 +37,32 @@ def ao_clicar_botao():
     rotulo.config(text=texto)
 
 
+#funcao do botao
+def desejar_bomdia():
+    """esta funcao pega o nome digitado na caixa de texto e deseja um bom dia"""
+    nome = entrada.get()
+    label_resultado.config(text=f"Bom dia, {nome}!")
+
+
 #criar botao
 button_bomdia= tk.Button(janela,
                    text="Desejar Bom Dia",
                    font=("Arial", 18),
                    bg="pink",
                    fg="black",
-                   command=ao_clicar_botao)
+                   command=desejar_bomdia,
+                   )
 
 button_bomdia.pack(pady=10)
+
+#resultado
+label_resultado = tk.Label(janela,
+                            text="",
+                            font=("Arial", 18),
+                            bg="pink",
+                            fg="black")
+
+label_resultado.pack(pady=20)
 
 #mudando a cor de fundo da janela
 janela.config(bg="lightblue")

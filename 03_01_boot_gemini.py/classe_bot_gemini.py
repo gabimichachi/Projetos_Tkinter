@@ -4,7 +4,7 @@ class Gemini_Bot:
     """Classe responsável por gerenciar o modelo do Gemini."""
     
     def __init__(self):
-        genai.configure(api_key="AIzaSyAqylEfukRImxev0EAolWeMNmW1URQK9lQ")
+        genai.configure(api_key="AIzaSyDBoTTE06H5ADrvPqwDbqLH_piX3jt0NoQ")
         
         instrucao_sistema = """
             Você é especialista em dormir, com 20 anos de experiência.

@@ -65,9 +65,12 @@ class Janela_chat():
         self.label_resultado = ttk.Label(self.janela,
                                     text="",
                                     foreground="white",
-                                    font=("Arial", 30))
+                                    font=("Arial", 20))
 
         self.label_resultado.pack(pady=20)
+
+        self.st = ttk.ScrolledText(self.janela, height=10, wrap="word")
+        self.st.pack(pady=10, padx=10, fill="both", expand=True)
 
         # criando o objeto robo (instancando a classe) 
         self.robo = Gemini_Bot()
@@ -75,11 +78,12 @@ class Janela_chat():
         #funcao do botao
     def responder(self):
         """esta funcao pega a pergunta sobre sono e responde"""
-        pergunta = self.entry_pergunta.get()
+        pergunta = self.entry_resposta.get()
         resposta = self.robo.enviar_mensagem(pergunta)
         self.label_resultado.config(text=resposta)
 
-        
+        self.st.delete("1.0", ttk.END)
+        self.st.insert("1.0", resposta)
         
     def run(self):
         self.janela.mainloop()

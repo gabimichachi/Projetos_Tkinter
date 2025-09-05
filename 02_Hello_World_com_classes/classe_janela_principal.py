@@ -82,3 +82,7 @@ class Janela_principal:
 
         #loop para manter a janela aberta
         self.janela.mainloop()
+
+if __name__ == "__main__":
+    janela = Janela_principal()
+    janela.run()

@@ -1,4 +1,6 @@
 import ttkbootstrap as ttk
+import tkinter.messagebox
+from tkinter import messagebox
 
 class calculadoraIMC():
     def __init__(self):
@@ -80,19 +82,28 @@ class calculadoraIMC():
 
 
     def calcular_imc(self):
-        peso_texto = float (self.peso.get())
-        altura_texto = float (self.altura.get())
-        #calcula o indice de massa corporal (IMC)
-        altura_metros = altura_texto / 100
-        self.resultado_imc = peso_texto / (altura_metros ** 2)
-        self.resultado_label.config(text=f"valor do IMC: {self.resultado_imc:.2f}")
+
+        try:
+            peso_texto = float (self.peso.get())
+            altura_texto = float (self.altura.get())
+            #calcula o indice de massa corporal (IMC)
+            altura_metros = altura_texto / 100
+            self.resultado_imc = peso_texto / (altura_metros ** 2)
+            self.resultado_label.config(text=f"valor do IMC: {self.resultado_imc:.2f}")
+
+        except ValueError:
+            tkinter.messagebox.showerror(title="ERRO", message="Valores incorretos")
+            
+
+        
+
         
         #classificaçao
         self.classificacao_colocar()
         self.classificacao_label.config(text=self.classificacao)
 
     def classificacao_colocar(self):
-        
+
         if self.resultado_imc < 18.5:
             self.classificacao = "Abaixo do Peso Normal"
 

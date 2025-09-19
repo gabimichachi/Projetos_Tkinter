@@ -1,6 +1,7 @@
 import tkinter
 import ttkbootstrap as ttk
-import tkinter.messagebox as msg
+import tkinter.messagebox
+from classe_lista_tarefas import Tarefas
 
 class Login():
     def __init__(self):
@@ -75,7 +76,7 @@ class Login():
                                 text="sair",
                                 padding= (20,10),
                                 style="secondary",
-                                command=self.janela.destroy
+                                command=self.fechar
                                 )
         self.button_botao.pack(side="right", padx=10, pady=20)
 
@@ -88,14 +89,19 @@ class Login():
     def logar(self):
         usuario_senha = (self.digitar.get())
         usuario_digitar = (self.digite.get())
+
         if usuario_senha == "oliviawyy" and usuario_digitar == "1234":
-            tkinter.messagebox.showinfo(title= "Login realizado com sucesso!", message = "Bem Vindo!!")
+                self.janela.destroy()
+                janela_tarefas = Tarefas()
+                janela_tarefas.run()
+                
         else:
             tkinter.messagebox.showerror(title= "Erro no login", message = "Usuário ou senha incorretos!")
 
     def fechar(self):
-        self.janela.destroy()
-
+        resposta = tkinter.messagebox.askyesno(title="fechar", message="voce tem certeza que deseja sair?")
+        if resposta == True:
+                self.janela.destroy()
 
 
     def run(self):

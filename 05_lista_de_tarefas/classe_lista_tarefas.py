@@ -1,6 +1,8 @@
 import ttkbootstrap as ttk
 from tkinter import Listbox
 from tkinter import END
+from tkinter import messagebox
+import sqlite3
 
 
 class Tarefas():
@@ -59,7 +61,8 @@ class Tarefas():
         botao_marcar = ttk.Button(frame_botao, 
                                   text="Marcar como concluido", 
                                   style="primary", 
-                                  width=20)
+                                  width=20,
+                                  command=self.marcar_concluido)
         botao_marcar.pack(side="right",padx=10)
 
 
@@ -79,7 +82,24 @@ class Tarefas():
         # Obtém o índice da tarefa selecionada
         excluir_indice = self.lista.curselection()
 
-        self.lista.delete(excluir_indice[0])  # Exclui a tarefa selecionada
+        if excluir_indice:
+            self.lista.delete(excluir_indice)
+        else:
+            messagebox.showerror(message="Selecione um item antes de excluir!")
+
+        # self.lista.delete(excluir_indice[0])  # Exclui a tarefa selecionada
+
+    def marcar_concluido(self):
+        tarefa_selecionada = self.lista.curselection()
+        texto = self.lista.get(tarefa_selecionada)
+
+        if tarefa_selecionada:
+            self.lista.delete(tarefa_selecionada[0])
+            self.lista.insert(tarefa_selecionada[0], texto + "   concluído☀︎")
+            self.lista.itemconfig(tarefa_selecionada, {"fg": "green", "selectforeground": "green"})
+            
+        else:
+            messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")
 
 
 

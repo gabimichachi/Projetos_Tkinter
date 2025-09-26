@@ -1,5 +1,6 @@
 import ttkbootstrap as ttk
 from tkinter import Listbox
+from tkinter import END
 
 
 class Tarefas():
@@ -36,19 +37,51 @@ class Tarefas():
 
         ttk.Button(frame_add,
                    text="adicionar",
-                   style="secondary").pack(side="right")
+                   style="secondary",
+                   command=self.adicionar_tarefa).pack(side="right")
 
-        lista = Listbox(self.janela, font=("Segoe UI", 12),width=80)
-        lista.pack(pady=30)
+        self.lista = Listbox(self.janela, 
+                        font=("Segoe UI", 12),
+                        width=80)
+        self.lista.pack(pady=30)
         
         frame_botao = ttk.Frame(self.janela)
-        frame_botao.pack(side="bottom", expand=True)
+        frame_botao.pack(side="bottom", 
+                         expand=True)
 
-        botao_excluir = ttk.Button(frame_botao, text="Excluir", style="secondary", width=30)
+        botao_excluir = ttk.Button(frame_botao,
+                                   command=self.excluir_tarefa ,
+                                   text="Excluir", 
+                                   style="danger", 
+                                   width=20) 
         botao_excluir.pack(side="left",padx=10)
 
-        botao_marcar = ttk.Button(frame_botao, text="Marcar como concluido", style="secondary", width=30)
+        botao_marcar = ttk.Button(frame_botao, 
+                                  text="Marcar como concluido", 
+                                  style="primary", 
+                                  width=20)
         botao_marcar.pack(side="right",padx=10)
+
+
+
+    def adicionar_tarefa(self):
+        #pegando o texto da caixa de texto 
+        tarefa = self.add_tarefa.get()
+
+        #inserindo a tarefa na list
+        self.lista.insert(END, tarefa)
+        self.add_tarefa.delete(0, END)  # Limpa o campo de entrada após adicionar
+
+
+        # tarefa.pack()
+
+    def excluir_tarefa(self):
+        # Obtém o índice da tarefa selecionada
+        excluir_indice = self.lista.curselection()
+
+        self.lista.delete(excluir_indice[0])  # Exclui a tarefa selecionada
+
+
 
 # (pady=20, padx=20, fill='both'adfegrgrhtehe)
 

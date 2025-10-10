@@ -65,39 +65,126 @@ class Tarefas():
                                   command=self.marcar_concluido)
         botao_marcar.pack(side="right",padx=10)
 
+        conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
 
+        #Criando responsavel por comandar o Banco de Dados 
+        cursor = conexao.cursor()
 
+        #Criando tabela 
+        sql_para_criar_tabela = """
+                                CREATE TABLE IF NOT EXISTS tarefa (
+                                codigo integer primary key autoincrement,
+                                descricao_tarefa varchar(200)
+                                );
+                                """
+        cursor.execute(sql_para_criar_tabela)
+
+        # Confirma as alterações
+        conexao.commit()
+        
+        #fechei a conexão
+        cursor.close()
+        conexao.close()
+
+        self.atualizar_lista()
+
+    def atualizar_lista(self):
+
+        #atualizar tarefa 
+
+        conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+        cursor = conexao.cursor()
+
+        sql_para_selecionar_tarefas = """
+                                        select codigo, descricao_tarefa from tarefa;
+                                        """
+        cursor.execute(sql_para_selecionar_tarefas)
+
+        lista_de_tarefas =cursor.fetchall()
+
+        cursor.close()
+        conexao.close()
+
+        #inserindo items listbox
+        for linha in lista_de_tarefas:
+            self.lista.insert("end", linha[1])
+
+    
     def adicionar_tarefa(self):
-        #pegando o texto da caixa de texto 
+        #pegango o texto da caixa de texto
         tarefa = self.add_tarefa.get()
 
-        #inserindo a tarefa na list
-        self.lista.insert(END, tarefa)
-        self.add_tarefa.delete(0, END)  # Limpa o campo de entrada após adicionar
+        self.lista.insert(0, tarefa)
 
+        conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+        cursor = conexao.cursor()
+
+        sql_insert = """
+                        INSERT INTO tarefa (descricao_tarefa)
+                        VALUES (?)
+                    """
+        cursor.execute(sql_insert,[tarefa])
+        conexao.commit()
+
+        cursor.close()
+        conexao.close()
 
         # tarefa.pack()
 
     def excluir_tarefa(self):
-        # Obtém o índice da tarefa selecionada
+        
         excluir_indice = self.lista.curselection()
 
         if excluir_indice:
-            self.lista.delete(excluir_indice)
-        else:
-            messagebox.showerror(message="Selecione um item antes de excluir!")
 
-        # self.lista.delete(excluir_indice[0])  # Exclui a tarefa selecionada
+            self.lista.delete(excluir_indice)
+
+            conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+            cursor = conexao.cursor()
+
+            sql_delete = """
+                            delete from tarefa WHERE = descricao_tarefa
+
+                        """
+            
+            
+            cursor.execute(sql_delete, excluir_indice)
+
+            conexao.commit()
+
+            cursor.close()
+            conexao.close()
+        else:
+            messagebox.showerror(message="Selecione um item antes de excluir")
 
     def marcar_concluido(self):
-        tarefa_selecionada = self.lista.curselection()
-        texto = self.lista.get(tarefa_selecionada)
+        item_selecionada = self.lista.curselection()
 
-        if tarefa_selecionada:
-            self.lista.delete(tarefa_selecionada[0])
-            self.lista.insert(tarefa_selecionada[0], texto + "   concluído☀︎")
-            self.lista.itemconfig(tarefa_selecionada, {"fg": "green", "selectforeground": "green"})
+        if item_selecionada:
+            texto_tarefa = self.lista.get(item_selecionada)
+
+
             
+            if "   concluído☀︎" not in texto_tarefa:
+                
+                self.lista.delete(item_selecionada[0]) 
+                texto_tarefa_concluido = texto_tarefa + "   concluído☀︎" 
+                self.lista.insert(item_selecionada[0], texto_tarefa_concluido)
+
+                with sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite") as conexao:
+                    cursor = conexao.cursor()
+
+                    sql_update = """
+                                UPDATE tarefa
+                                SET descricao_tarefa = ?
+                                WHERE descricao_tarefa = ?;
+                                """
+                    valores = (texto_tarefa_concluido, texto_tarefa)
+                    
+                    # Aqui executamos o sql junto com os valores
+                    cursor.execute(sql_update, valores)
+                    
+
         else:
             messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")
 

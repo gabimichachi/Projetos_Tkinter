@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from tkinter import Listbox
 from tkinter import END
 from tkinter import messagebox
+import sqlite3
 
 
 class Cadastro:
@@ -68,20 +69,70 @@ class Cadastro:
         frame_botao.pack(side="bottom", 
                          expand=True)
         
-        botao_excluir = ttk.Button(frame_botao,
-                                   command=self,
-                                   text="Excluir", 
-                                   style="danger", 
-                                   width=20) 
-        botao_excluir.pack(side="left",padx=10)
 
         botao_marcar = ttk.Button(frame_botao, 
-                                  text="Marcar como concluido", 
+                                  text="Cadastrar", 
                                   style="primary", 
                                   width=20,
-                                  command=self)
-        botao_marcar.pack(side="right",padx=10)
-    
+                                  command=self.add_usario)
+        botao_marcar.pack(side="right",padx=10) 
+
+        
+
+    def criar_tabela_usuario(self):
+        # conectando o banco de dados
+        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
+
+        # criar cursor 
+        cursor = conexao.cursor()
+
+        # executar o comando
+        cursor.execute("""
+                CREATE TABLE  IF NOT EXISTS usuario (
+                            nome VARCHAR(80),
+                            usuario VARCHAR (20) PRIMARY KEY,
+                            senha VARCHAR (20)
+
+            );
+                    """)  
+        # comito a transação
+        conexao.commit()
+
+        # encerro a conexão
+        conexao.close()
+
+    def inserir_usuario(self):
+        #   criar conexao
+        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
+
+        # criar cursor
+        cursor = conexao.cursor()
+
+        nome = self.usuario.get()
+        usuario = self.add_usario.get()
+        senha = self.senha.get()
+
+        # executar
+        cursor.execute("""
+                        INSERT INTO usuario
+                        (nome,
+                        usuario,
+                        senha)
+                        VALUES
+                        (?,
+                        ?,
+                        ?);
+                        """,
+                        [nome,
+                         usuario,
+                         senha]
+                        )
+
+        # comitar
+        conexao.commit()
+
+        # fechar conexão
+        conexao.close()
 
 
 

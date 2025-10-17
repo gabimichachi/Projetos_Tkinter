@@ -5,8 +5,8 @@ from tkinter import messagebox
 
 
 class Cadastro:
-    def __init__(self):
-        self.Tarefas = ttk.Window(themename="minty",
+    def __init__(self, janela_pai):
+        self.Tarefas = ttk.Toplevel(janela_pai)(themename="minty",
                                   title="lista de cadastro")
         self.Tarefas.geometry("800x600")
 

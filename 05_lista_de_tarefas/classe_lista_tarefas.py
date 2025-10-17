@@ -5,9 +5,10 @@ from tkinter import messagebox
 import sqlite3
 
 
+
 class Tarefas():
-    def __init__(self):
-        self.janela = ttk.Window(themename= "minty",
+    def __init__(self,janela_pai):
+        self.janela = ttk.Toplevel(janela_pai)(themename= "minty",
                                 title="lista de tarefas")
         self.janela.geometry("800x600")
 
@@ -65,7 +66,7 @@ class Tarefas():
                                   command=self.marcar_concluido)
         botao_marcar.pack(side="right",padx=10)
 
-        conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
 
         #Criando responsavel por comandar o Banco de Dados 
         cursor = conexao.cursor()
@@ -86,13 +87,20 @@ class Tarefas():
         cursor.close()
         conexao.close()
 
+        #abrino=do a janela de login
+        Login(self.janela)
+        #escondendo  ajanela da lista tarefas
+        self.janela.withdraw()
+
         self.atualizar_lista()
+
+        # lista_tarefas = Logar(self.janela)
 
     def atualizar_lista(self):
 
         #atualizar tarefa 
 
-        conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
         cursor = conexao.cursor()
 
         sql_para_selecionar_tarefas = """
@@ -116,7 +124,7 @@ class Tarefas():
 
         self.lista.insert(0, tarefa)
 
-        conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
         cursor = conexao.cursor()
 
         sql_insert = """
@@ -139,7 +147,7 @@ class Tarefas():
 
             self.lista.delete(excluir_indice)
 
-            conexao = sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite")
+            conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
             cursor = conexao.cursor()
 
             sql_delete = """
@@ -171,7 +179,7 @@ class Tarefas():
                 texto_tarefa_concluido = texto_tarefa + "   concluído☀︎" 
                 self.lista.insert(item_selecionada[0], texto_tarefa_concluido)
 
-                with sqlite3.connect("05_lista_de_tarefas/bd_lista_tarefas.sqlite") as conexao:
+                with sqlite3.connect("./bd_lista_tarefas.sqlite") as conexao:
                     cursor = conexao.cursor()
 
                     sql_update = """

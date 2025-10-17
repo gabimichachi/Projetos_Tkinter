@@ -4,11 +4,15 @@ import tkinter.messagebox
 from classe_lista_tarefas import Tarefas
 
 class Login():
-    def __init__(self):
+    def __init__(self,janela_pai):
+        self.janela_pai = janela_pai
 # criando a janela
-        self.janela = ttk.Window(themename= "minty",
+        self.janela = ttk.Toplevel(janela_pai)(themename= "minty",
                                 title="campo de login")
         self.janela.geometry("800x600")
+
+        # confiurando para que quandpo feche a kanela de login ele encerre o prohgrama
+        self.janela.protocol("WM_DELETE_WINDOW", self.fechar)
 
 #impede que o usuario redimensione a janela
         self.janela.resizable(False, False)
@@ -92,8 +96,10 @@ class Login():
 
         if usuario_senha == "oliviawyy" and usuario_digitar == "1234":
                 self.janela.destroy()
-                janela_tarefas = Tarefas()
-                janela_tarefas.run()
+                # reexibe a janela principal (janela de tarefas)
+                self.janela_pai.deiconify()
+                # janela_tarefas = Tarefas()
+                # janela_tarefas.run()
                 
         else:
             tkinter.messagebox.showerror(title= "Erro no login", message = "Usuário ou senha incorretos!")

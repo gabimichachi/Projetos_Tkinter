@@ -3,13 +3,13 @@ from tkinter import Listbox
 from tkinter import END
 from tkinter import messagebox
 import sqlite3
-
+from login import Login
 
 
 class Tarefas():
-    def __init__(self,janela_pai):
-        self.janela = ttk.Toplevel(janela_pai)(themename= "minty",
-                                title="lista de tarefas")
+    def __init__(self):
+        self.janela = ttk.Window( themename="minty")
+        self.janela.title("Lista de Tarefas")
         self.janela.geometry("800x600")
 
 #impede que o usuario redimensione a janela
@@ -140,24 +140,19 @@ class Tarefas():
         # tarefa.pack()
 
     def excluir_tarefa(self):
-        
         excluir_indice = self.lista.curselection()
 
         if excluir_indice:
-
+            texto_tarefa = self.lista.get(excluir_indice[0])  # Obter o texto da tarefa
             self.lista.delete(excluir_indice)
 
             conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
             cursor = conexao.cursor()
 
             sql_delete = """
-                            delete from tarefa WHERE = descricao_tarefa
-
+                            DELETE FROM tarefa WHERE descricao_tarefa = ?;
                         """
-            
-            
-            cursor.execute(sql_delete, excluir_indice)
-
+            cursor.execute(sql_delete, (texto_tarefa,))  # Corrigido
             conexao.commit()
 
             cursor.close()
@@ -169,14 +164,11 @@ class Tarefas():
         item_selecionada = self.lista.curselection()
 
         if item_selecionada:
-            texto_tarefa = self.lista.get(item_selecionada)
+            texto_tarefa = self.lista.get(item_selecionada[0])  # Corrigido
 
-
-            
             if "   concluído☀︎" not in texto_tarefa:
-                
-                self.lista.delete(item_selecionada[0]) 
-                texto_tarefa_concluido = texto_tarefa + "   concluído☀︎" 
+                self.lista.delete(item_selecionada[0])
+                texto_tarefa_concluido = texto_tarefa + "   concluído☀︎"
                 self.lista.insert(item_selecionada[0], texto_tarefa_concluido)
 
                 with sqlite3.connect("./bd_lista_tarefas.sqlite") as conexao:
@@ -188,21 +180,9 @@ class Tarefas():
                                 WHERE descricao_tarefa = ?;
                                 """
                     valores = (texto_tarefa_concluido, texto_tarefa)
-                    
-                    # Aqui executamos o sql junto com os valores
                     cursor.execute(sql_update, valores)
-                    
-
         else:
             messagebox.showerror("Aviso", "Selecione uma tarefa para concluir.")
-
-
-
-# (pady=20, padx=20, fill='both'adfegrgrhtehe)
-
-
-
-
 
     def run(self):
         self.janela.mainloop()

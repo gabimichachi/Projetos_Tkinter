@@ -2,6 +2,7 @@ import tkinter
 import ttkbootstrap as ttk
 import tkinter.messagebox
 from classe_lista_tarefas import Tarefas
+import sqlite3
 
 class Login():
     def __init__(self,janela_pai):
@@ -93,6 +94,13 @@ class Login():
     def logar(self):
         usuario_senha = (self.digitar.get())
         usuario_digitar = (self.digite.get())
+
+        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
+        cursor = conexao.cursor()
+        cursor.execute("""SELECT usuario, senha FROM usuarios
+                        WHERE usuario = ? AND senha = ?""",
+                          (usuario_senha, usuario_digitar))
+
 
         if usuario_senha == "oliviawyy" and usuario_digitar == "1234":
                 self.janela.destroy()

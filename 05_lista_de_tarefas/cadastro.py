@@ -6,9 +6,9 @@ import sqlite3
 
 
 class Cadastro:
-    def __init__(self, janela_pai):
-        self.Tarefas = ttk.Toplevel(janela_pai)(themename="minty",
-                                  title="lista de cadastro")
+    def __init__(self, PaidoCadastro):
+        self.Tarefas = ttk.Toplevel(PaidoCadastro)
+                                  
         self.Tarefas.geometry("800x600")
 
     #impede que o usuario redimensione a janela
@@ -31,7 +31,7 @@ class Cadastro:
 
 
         self.usuario = ttk.Label(self.Tarefas,
-                      text="Digite seu Usuário: ",
+                      text="Digite seu nome completo: ",
                       foreground="black",
                       font=("Times New Roman", 14))
         self.usuario.pack(pady=10)
@@ -43,7 +43,7 @@ class Cadastro:
         self.add_usario.pack(padx=20, pady=30)
         # ----------------------------------------------------
         self.senha = ttk.Label(self.Tarefas,
-                      text="Digite seu Peso: ",
+                      text="Digite seu usuário: ",
                       foreground="black",
                       font=("Times New Roman", 14))
         self.senha.pack(pady=10)
@@ -54,7 +54,7 @@ class Cadastro:
         self.add_senha.pack(padx=20, pady=30)
         # ----------------------------------------------------
         self.confirmar = ttk.Label(self.Tarefas,
-                      text="Digite seu Peso: ",
+                      text="Digite a sua senha: ",
                       foreground="black",
                       font=("Times New Roman", 14))
         self.confirmar.pack(pady=10)
@@ -74,10 +74,10 @@ class Cadastro:
                                   text="Cadastrar", 
                                   style="primary", 
                                   width=20,
-                                  command=self.add_usario)
+                                  command=self.inserir_usuario)
         botao_marcar.pack(side="right",padx=10) 
 
-        
+        self.criar_tabela_usuario()
 
     def criar_tabela_usuario(self):
         # conectando o banco de dados
@@ -85,6 +85,7 @@ class Cadastro:
 
         # criar cursor 
         cursor = conexao.cursor()
+
 
         # executar o comando
         cursor.execute("""
@@ -102,37 +103,48 @@ class Cadastro:
         conexao.close()
 
     def inserir_usuario(self):
-        #   criar conexao
-        conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
+        # try:
+            #   criar conexao
+            conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
 
-        # criar cursor
-        cursor = conexao.cursor()
+            # criar cursor
+            cursor = conexao.cursor()
 
-        nome = self.usuario.get()
-        usuario = self.add_usario.get()
-        senha = self.senha.get()
+            nome = self.add_usario.get()
+            usuario = self.add_senha.get()
+            senha = self.add_confirmar.get()
 
-        # executar
-        cursor.execute("""
-                        INSERT INTO usuario
-                        (nome,
-                        usuario,
-                        senha)
-                        VALUES
-                        (?,
-                        ?,
-                        ?);
-                        """,
-                        [nome,
-                         usuario,
-                         senha]
-                        )
+    
+            # executar
+            cursor.execute("""
+                            INSERT INTO usuario
+                            (nome,
+                            usuario,
+                            senha)
+                            VALUES
+                            (?,
+                            ?,
+                            ?);
+                            """,
+                            [nome,
+                            usuario,
+                            senha]
+                            )
 
-        # comitar
-        conexao.commit()
+            # comitar
+            conexao.commit()
 
-        # fechar conexão
-        conexao.close()
+            # fechar conexão
+            conexao.close()
+
+            messagebox.showinfo("Sucesso!", "Usuário cadastrado com sucesso!")
+        
+        # except:
+        #      messagebox.showerror("Erro!", "Erro ao cadastrar usuário. Tente novamente.")
+             
+        # finally:
+        #      conexao.close()
+    
 
 
 

@@ -100,6 +100,7 @@ class Login():
         cursor.execute("""SELECT usuario, senha FROM usuarios
                         WHERE usuario = ? AND senha = ?""",
                           (usuario_senha, usuario_digitar))
+        resultado = cursor.fetchone()
 
 
         if usuario_senha == "oliviawyy" and usuario_digitar == "1234":

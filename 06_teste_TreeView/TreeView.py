@@ -1,5 +1,7 @@
 import ttkbootstrap as ttk
-
+def apagar_item():
+    item_selecionado = treeview.selection()
+    treeview.delete(item_selecionado)
 # criando a janela
 janela = ttk.Window(themename="minty")
 janela.geometry("800x600")
@@ -27,5 +29,9 @@ treeview.column("cidade", anchor = "center")
 
 # inserindo dados
 treeview.insert("", "end", values= ["Olivia", "16", "São Paulo"])
+treeview.insert("", "end", values= ["Liam", "18", "Rio de Janeiro"])
+
+ttk.Button(janela, text="DELETAR", command=apagar_item).pack(pady=10)
 
 janela.mainloop()
+

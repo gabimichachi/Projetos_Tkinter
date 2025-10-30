@@ -7,18 +7,28 @@ from login import Login
 
 
 class Tarefas():
-    def __init__(self):
+    def __init__(self, usuario_logado=None):
+
+        # usuario que esta logado
+        self.usuario_logado = usuario_logado
+
+        print(usuario_logado)
+        # criando a janela
         self.janela = ttk.Window( themename="minty")
+
+        # criando o titulo
         self.janela.title("Lista de Tarefas")
+
+        # tamanho da janela
         self.janela.geometry("800x600")
 
-#impede que o usuario redimensione a janela
+        #impede que o usuario redimensione a janela
         self.janela.resizable(False, False)
 
-#mudando a cor de fundo da janela
+        #mudando a cor de fundo da janela
         self.janela.iconbitmap("05_lista_de_tarefas/ico.ico")
        
-#titulo
+        #titulo
         self.titulo = ttk.Label(self.janela,
                          text="Lista de Tarefas ─.✦",
                          background="pink",
@@ -75,7 +85,8 @@ class Tarefas():
         sql_para_criar_tabela = """
                                 CREATE TABLE IF NOT EXISTS tarefa (
                                 codigo integer primary key autoincrement,
-                                descricao_tarefa varchar(200)
+                                descricao_tarefa varchar(200),
+                                usuario varchar(20)
                                 );
                                 """
         cursor.execute(sql_para_criar_tabela)
@@ -88,7 +99,8 @@ class Tarefas():
         conexao.close()
 
         #abrino=do a janela de login
-        Login(self.janela)
+        Login(self)
+        
         #escondendo  ajanela da lista tarefas
         self.janela.withdraw()
 
@@ -104,9 +116,10 @@ class Tarefas():
         cursor = conexao.cursor()
 
         sql_para_selecionar_tarefas = """
-                                        select codigo, descricao_tarefa from tarefa;
+                                        select codigo, descricao_tarefa from tarefa
+                                        where usuario = ?;
                                         """
-        cursor.execute(sql_para_selecionar_tarefas)
+        cursor.execute(sql_para_selecionar_tarefas, [self.usuario_logado])
 
         lista_de_tarefas =cursor.fetchall()
 
@@ -122,18 +135,20 @@ class Tarefas():
         #pegango o texto da caixa de texto
         tarefa = self.add_tarefa.get()
 
-        self.lista.insert(0, tarefa)
+        self.lista.insert("end", tarefa)
 
         conexao = sqlite3.connect("./bd_lista_tarefas.sqlite")
         cursor = conexao.cursor()
 
         sql_insert = """
-                        INSERT INTO tarefa (descricao_tarefa)
-                        VALUES (?)
+                        INSERT INTO tarefa (descricao_tarefa, usuario)
+                        VALUES (?, ?)
+                        
                     """
-        cursor.execute(sql_insert,[tarefa])
-        conexao.commit()
+        valores = (tarefa, self.usuario_logado)
+        cursor.execute(sql_insert, valores)
 
+        conexao.commit()
         cursor.close()
         conexao.close()
 

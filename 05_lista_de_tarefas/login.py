@@ -8,10 +8,12 @@ import sqlite3
 from cadastro import Cadastro
 
 class Login:
-    def __init__(self, janelaPai):
+    def __init__(self, classePai):
         
-        self.janelaPai = janelaPai
-        self.janela = ttk.Toplevel(janelaPai)
+        self.janelaPai = classePai.janela
+        self.classePai = classePai
+
+        self.janela = ttk.Toplevel(self.janelaPai)
 
         # Configurando para que quando feche a janela de login ele feche o programa!
 
@@ -65,15 +67,18 @@ class Login:
         cursor.execute(sql_verificar_login, (self.resposta_usuario, self.resposta_senha))
         
         # Pega o primeiro resultado   do select
-        usuario_encontrado = cursor.fetchone()
+        resultado = cursor.fetchone()
 
         conexao.close()
 
-        if usuario_encontrado:
+        if resultado != None:
             tkinter.messagebox.showinfo("Logado com sucesso!", "Aproveite o melhor aplicativo do mundo!")
             self.janela.destroy()
             # Reexibir a janela pai
             self.janelaPai.deiconify()
+            self.classePai.usuario_logado = self.resposta_usuario
+            # ATUALIZANDO A LISTA DE TAREFAS
+            self.classePai.atualizar_lista()
 
         else:
             tkinter.messagebox.showerror("Aviso!", "Seu login não existe ou está errado!")  

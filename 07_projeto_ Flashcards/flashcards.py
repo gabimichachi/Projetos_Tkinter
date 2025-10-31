@@ -78,7 +78,7 @@ class FlashcardC():
 
         # Criando o Treeview (apenas uma vez)
         self.treeview = ttk.Treeview(self.janela, columns=("disciplina", "pergunta", "resposta"), show="headings")
-        self.treeview.pack(pady=20)
+        self.treeview.pack(pady=21)
 
         # Configurando as colunas do Treeview
         self.treeview.heading("disciplina", text="Disciplina")

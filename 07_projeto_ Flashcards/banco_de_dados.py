@@ -1,4 +1,5 @@
 import sqlite3
+import
 
 # Nome do arquivo do banco de dados SQLite
 DATABASE_NAME = "flashcards.db"

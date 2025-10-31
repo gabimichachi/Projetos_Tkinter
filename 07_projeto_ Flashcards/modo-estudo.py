@@ -14,7 +14,7 @@ class Estudo():
                         text="Modo estudo 𓇼𓏲*ੈ✩‧₊˚🎐",
                         background="lightskyblue",
                         foreground="navy",
-                        font=("Kristen ITC", 20))
+                        font=("Kristen ITC", 21))
         self.rotulo.pack(pady=30)
 
 

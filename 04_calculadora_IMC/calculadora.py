@@ -13,7 +13,7 @@ class calculadoraIMC():
         self.janela.resizable(False, False)
 
         #mudando a cor de fundo da janela
-        self.janela.iconbitmap("calculadora_IMC/peso.ico")
+        self.janela.iconbitmap("04_calculadora_IMC/peso.ico")
 
         # criando um rótulo
         self.rotulo = ttk.Label(self.janela,

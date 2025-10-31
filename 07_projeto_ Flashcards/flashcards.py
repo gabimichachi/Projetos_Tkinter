@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class FlashcardC():
     def __init__(self):
         # criando a janela
@@ -10,6 +11,8 @@ class FlashcardC():
         self.janela.resizable(False, False)
 
         self.janela.iconbitmap("07_projeto_ Flashcards/genio.ico")
+
+        
 
         self.rotulo = ttk.Label(self.janela,
                         text="Gerenciar cartões de estudo ┆⤿💌⌗",
@@ -100,6 +103,8 @@ class FlashcardC():
             self.disciplina_entry.delete(0, tk.END)
             self.pergunta_text.delete("1.0", tk.END)
             self.resposta_text.delete("1.0", tk.END)
+
+    
 
     def run(self):
         self.janela.mainloop()
